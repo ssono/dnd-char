@@ -30,25 +30,25 @@ ability = {
     "cha": 13
 }
 
-#(skill: trained, misc bonus)
+#(skill: trained, misc bonus]
 skills = {
-    "acrobatics": (True, 2),
-    "arcana": (False, 0),
-    "athletics": (True, 0),
-    "bluff": (False, 0),
-    "diplomacy": (False, 0),
-    "dungeoneering": (True, 0),
-    "endurance": (False, 0),
-    "heal": (False, 0),
-    "history": (False, 0),
-    "insight": (False, 0),
-    "intimidate": (False, 0),
-    "nature": (True, 0),
-    "perception": (True, 0),
-    "religion": (False, 0),
-    "stealth": (True, 0),
-    "streetwise": (False, 0),
-    "thievery": (True, 2)
+    "acrobatics": [True, 2],
+    "arcana": [False, 0],
+    "athletics": [True, 0],
+    "bluff": [False, 0],
+    "diplomacy": [False, 0],
+    "dungeoneering": [True, 0],
+    "endurance": [False, 0],
+    "heal": [False, 0],
+    "history": [False, 0],
+    "insight": [False, 0],
+    "intimidate": [False, 0],
+    "nature": [True, 0],
+    "perception": [True, 0],
+    "religion": [False, 0],
+    "stealth": [True, 0],
+    "streetwise": [False, 0],
+    "thievery": [True, 2]
 }
 
 
@@ -109,10 +109,10 @@ bag = {
         "info": "Book of the undead and stuff"
     }
 }
-"""
 
 
-"""
+
+
 abiLoad = 'ability.json'
 with open(abiLoad, 'w') as f_obj:
     json.dump(ability, f_obj)
@@ -149,6 +149,7 @@ with open(bagDump) as f_obj:
     bag = json.load(f_obj)
 
 #returns value of a roll. dice = [dice required for roll], bonuses[bonuses for specific roll]
+
 def roll(dice, bonuses):
     result = 0
     for d in dice:
@@ -157,7 +158,58 @@ def roll(dice, bonuses):
         result += b
     return result
 
+initiative = (info["level"]/2) + (ability["dex"] - 10)/2
 
-#loop that asks what you want to do. (c)heck, (e)dit, (p)ower, (s)tatus, (i)nfo, (b)ag
+speed = 6
+
+passiveInsight = 10 + skills["insight"][1] + (info["level"]/2) + (ability["wis"] - 10)/2
+if skills["insight"][0]:
+    passiveInsight += 5
+
+passivePerception = 10 + skills["perception"][1] + info["level"]/2 + (ability["wis"] - 10)/2
+if skills["perception"][0]:
+    passivePerception += 5
+
+maxHP = 12 + ability["con"] + 5*(info["level"] - 1)
+HP = maxHP
+bloodied = False
+surgeVal = maxHP / 4
+surgePerDay = 6
+
+AC = 10 + info["level"]/2 + 2 + (ability["dex"] - 10)/2
+FORT = 10 + info["level"]/2 + 1 + (ability["str"] - 10)/2
+REF = 10 + info["level"]/2 + 1 + (ability["dex"] - 10)/2
+WILL = 10 + info["level"]/2 + (ability["wis"] - 10)/2
+
+weight = 0
+for item in bag:
+    weight += bag[item]["quantity"] * bag[item]["weight"]
+
+def status():
+    print(
+        "HP:\t" + str(HP) +"\n" +
+        "AC:\t" + str(AC) +"\n" +
+        "FORT:\t" + str(FORT) +"\n" +
+        "REF:\t" + str(REF) +"\n" +
+        "WILL:\t" + str(WILL) +"\n" +
+        "initiative:\t" + str(initiative) +"\n" +
+        "speed:\t" + str(speed) +"\n"
+        "weight:\t" + str(weight) +"\n" +
+        "passive insight:\t" + str(passiveInsight) +"\n" +
+        "passive perception:\t" + str(passivePerception) +"\n"
+    )
+def check():
+    skill = input("""What would you like to check?\n acrobatics, arcana, athletics, bluff, diplomacy, dungeoneering, endurance, heal,
+                    history, insight, intimidate, nature, perception, religion, stealth, streetwise, thievery\n\n""")
+
+
+#loop that asks what you want to do. (s)tatus, (c)heck, (a)ction, (p)ower, (b)ag, (i)nfo, (e)dit
 while(True):
-    choice = input("What would you like to do?\n (c)heck, (e)dit, (p)ower, (s)tatus, (i)nfo, (b)ag\n")
+    choice = input("What would you like to do?\n (s)tatus, (c)heck, (a)ction, (p)ower, (b)ag, (i)nfo, (e)dit\n\n")
+    if choice == 's' or choice == 'S':
+        print("\n")
+        status()
+    elif choice == 'c' or choice == 'C':
+        print("\n")
+        check()
+    print("\n")
