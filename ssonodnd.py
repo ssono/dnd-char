@@ -199,13 +199,14 @@ def status():
         "passive perception:\t" + str(passivePerception) +"\n"
     )
 def check():
-    skill = input("""What would you like to check?\n acrobatics, arcana, athletics, bluff, diplomacy, dungeoneering, endurance, heal,
-                    history, insight, intimidate, nature, perception, religion, stealth, streetwise, thievery\n\n""")
+    skill = input("""What would you like to check?\n (acr)obatics, (arc)ana, (ath)letics, (blu)ff, (dip)lomacy, (dun)geoneering, (end)urance, (hea)l,
+                    (his)tory, (ins)ight, (int)imidate, (nat)ure, (per)ception, (rel)igion, (ste)alth, (str)eetwise, (thi)every\n\n""")
 
 
 #loop that asks what you want to do. (s)tatus, (c)heck, (a)ction, (p)ower, (b)ag, (i)nfo, (e)dit
 while(True):
     choice = input("What would you like to do?\n (s)tatus, (c)heck, (a)ction, (p)ower, (b)ag, (i)nfo, (e)dit\n\n")
+    choice = choice.lower()
     if choice == 's' or choice == 'S':
         print("\n")
         status()
