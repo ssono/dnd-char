@@ -155,13 +155,13 @@ with open(bagDump) as f_obj:
 def roll(dice, bonuses):
     result = 0
     for d in dice:
-        result += random.randrange(1, d)
+        result += random.randint(1, d)
     for b in bonuses:
         result += b
     return result
 
 def d20():
-    return random.randrange(1, 20)
+    return random.randint(1, 20)
 #####################################################################################################################################################
 initiative = (info["level"]/2) + (ability["dex"] - 10)/2
 
