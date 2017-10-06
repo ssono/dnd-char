@@ -2,6 +2,55 @@ import json
 import random
 import sys
 
+power = {
+    "atwill": {
+        "careful attack": {
+            "effect": "ranged or meelee attack",
+            "rattack": ("dex", "2", "AC", 1),
+            "mattack": ("str", "2", "AC", 1),
+            "ranged": ([8], "[0]"),
+            "melee": ([4], "[0]")
+        },
+        "nimble strike": {
+            "effect": "shift 1 before or after. ranged attack",
+            "attack": ("dex", "0", "AC", 1),
+            "ranged": ([8], "[(ability['dex'] - 10)//2]")
+        },
+    },
+    "encounter": {
+        "evasive strike": {
+            "effect": "shift 1 + wis before or after. ranged or melee attack",
+            "rattack": ("dex", "0", "AC", 1),
+            "mattack": ("str", "0", "AC", 1),
+            "ranged": ([8, 8], "[(ability['dex'] - 10)//2]"),
+            "melee": ([4, 4], "[(ability['str'] - 10)//2]")
+        }
+    },
+    "daily": {
+        "split tree": {
+            "effect": "attack 2 character within 3 spaces. Roll attack twice use higher",
+            "rattack": ("dex", "0", "AC", 2),
+            "ranged": ([8, 8], "[(ability['dex'] - 10)//2]")
+        }
+    },
+    "utility": {
+        "second chance": {
+            "effect": "DAILY-- When you are hit by an enemy, force them to roll again"
+        },
+        "crucial advice": {
+            "effect": "ENCOUNTER-- An ally gets a bonus to a skill check in a skill you are trained in equal to wis"
+        }
+    }
+}
+
+#ability{name: score}
+#info{name: val}
+#skills{name: [trained bonus, misc bonus]}
+#bag{name: {value:, info:, weight, quantity}}
+#power{name:{effect: important stuff
+#            attack: (ability, bonus, defense, number of rolls)
+#            damage: ([dice], bonus as str)}}
+#feat{name: description}
 
 def abiLoad():
     filename = 'ability.json'
@@ -28,6 +77,7 @@ def featLoad():
     with open(filename, 'w') as f_obj:
         json.dump(feat, f_obj)
 
+powerLoad()
 ###############################################################################################################################
 def abilDump():
     filename = 'ability.json'
@@ -66,6 +116,7 @@ info = infoDump()
 skills = skillDump()
 bag = bagDump()
 feat = featDump()
+power = powerLoad()
 ##############################################################################################################################################
 #returns value of a roll. dice = [dice required for roll], bonuses[bonuses for specific roll]
 
@@ -193,7 +244,8 @@ def feats():
     for item in feat:
         print("#" + item + ":\t" + feat[item])
 ################################################################################################################################################################################################
-
+def powers():
+    return("wowo")
 #################################################################################################################################################################################################3
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit
 while(True):
