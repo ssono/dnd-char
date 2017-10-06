@@ -1,7 +1,6 @@
 import json
 import random
 import sys
-from status import *
 
 
 def abiLoad():
@@ -176,6 +175,21 @@ def check():
         roll = d20()
         return("thi:\t" + str(roll + info["level"]//2 + (ability["dex"]-10)//2 + skills["thi"][0] + skills["thi"][1]) + "\troll:\t" + str(roll))
     return result
+#####################################################################################################################################################################################################
+def health(HP, maxHP):
+    healthChoice = input("Would you like to (a)dd or (s)ubtract health?\n")
+    print("\n")
+    amount = input("How much?\n")
+    print("\n")
+    if healthChoice == 'a':
+        HP += int(amount)
+        if HP > maxHP:
+            HP = maxHP
+    elif healthChoice == 's':
+        HP -= int(amount)
+    print("You have " + str(HP) + " HP\n")
+    return HP
+
 #################################################################################################################################################################################################3
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit
 while(True):
@@ -187,6 +201,11 @@ while(True):
     elif choice == 'c':
         print("\n")
         print(check())
+    elif choice =='h':
+        print("\n")
+        HP = health(HP, maxHP)
     elif choice == 'q':
         sys.exit(0)
+    else:
+        print("Try again...\n")
     print("\n")
