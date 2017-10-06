@@ -2,44 +2,45 @@ import json
 import random
 import sys
 
-power = {
-    "atwill": {
-        "careful attack": {
-            "effect": "ranged or meelee attack",
-            "rattack": ("dex", "2", "AC", 1),
-            "mattack": ("str", "2", "AC", 1),
-            "ranged": ([8], "[0]"),
-            "melee": ([4], "[0]")
-        },
-        "nimble strike": {
-            "effect": "shift 1 before or after. ranged attack",
-            "attack": ("dex", "0", "AC", 1),
-            "ranged": ([8], "[(ability['dex'] - 10)//2]")
-        },
+atwill = {
+    "careful attack": {
+        "effect": "ranged or meelee attack",
+        "rattack": ("dex", "2", "AC", 1),
+        "mattack": ("str", "2", "AC", 1),
+        "ranged": ([8], "[0]"),
+        "melee": ([4], "[0]")
     },
-    "encounter": {
-        "evasive strike": {
-            "effect": "shift 1 + wis before or after. ranged or melee attack",
-            "rattack": ("dex", "0", "AC", 1),
-            "mattack": ("str", "0", "AC", 1),
-            "ranged": ([8, 8], "[(ability['dex'] - 10)//2]"),
-            "melee": ([4, 4], "[(ability['str'] - 10)//2]")
-        }
+    "nimble strike": {
+        "effect": "shift 1 before or after. ranged attack",
+        "attack": ("dex", "0", "AC", 1),
+        "ranged": ([8], "[(ability['dex'] - 10)//2]")
+    }
+}
+
+encounter = {
+    "evasive strike": {
+        "effect": "shift 1 + wis before or after. ranged or melee attack",
+        "rattack": ("dex", "0", "AC", 1),
+        "mattack": ("str", "0", "AC", 1),
+        "ranged": ([8, 8], "[(ability['dex'] - 10)//2]"),
+        "melee": ([4, 4], "[(ability['str'] - 10)//2]")
+    }
+}
+
+daily = {
+    "split tree": {
+        "effect": "attack 2 character within 3 spaces. Roll attack twice use higher",
+        "rattack": ("dex", "0", "AC", 2),
+        "ranged": ([8, 8], "[(ability['dex'] - 10)//2]")
+    }
+}
+
+utility = {
+    "second chance": {
+        "effect": "DAILY-- When you are hit by an enemy, force them to roll again"
     },
-    "daily": {
-        "split tree": {
-            "effect": "attack 2 character within 3 spaces. Roll attack twice use higher",
-            "rattack": ("dex", "0", "AC", 2),
-            "ranged": ([8, 8], "[(ability['dex'] - 10)//2]")
-        }
-    },
-    "utility": {
-        "second chance": {
-            "effect": "DAILY-- When you are hit by an enemy, force them to roll again"
-        },
-        "crucial advice": {
-            "effect": "ENCOUNTER-- An ally gets a bonus to a skill check in a skill you are trained in equal to wis"
-        }
+    "crucial advice": {
+        "effect": "ENCOUNTER-- An ally gets a bonus to a skill check in a skill you are trained in equal to wis"
     }
 }
 
@@ -68,23 +69,38 @@ def bagLoad():
     filename = 'bag.json'
     with open(filename, 'w') as f_obj:
         json.dump(bag, f_obj)
-def powerLoad():
-    filename = 'power.json'
-    with open(filename, 'w') as f_obj:
-        json.dump(power, f_obj)
 def featLoad():
     filename = 'feat.json'
     with open(filename, 'w') as f_obj:
         json.dump(feat, f_obj)
+def atwillLoad():
+    filename = 'atwill.json'
+    with open(filename, 'w') as f_obj:
+        json.dump(atwill, f_obj)
+def encounterLoad():
+    filename = 'encounter.json'
+    with open(filename, 'w') as f_obj:
+        json.dump(encounter, f_obj)
+def dailyLoad():
+    filename = 'daily.json'
+    with open(filename, 'w') as f_obj:
+        json.dump(daily, f_obj)
+def utilityLoad():
+    filename = 'utility.json'
+    with open(filename, 'w') as f_obj:
+        json.dump(utility, f_obj)
 
-powerLoad()
+
+atwillLoad()
+encounterLoad()
+dailyLoad()
+utilityLoad()
 ###############################################################################################################################
 def abilDump():
     filename = 'ability.json'
     with open(filename) as f_obj:
         ability = json.load(f_obj)
         return ability
-
 def infoDump():
     filename = 'info.json'
     with open(filename) as f_obj:
@@ -100,23 +116,43 @@ def bagDump():
     with open(filename) as f_obj:
         bag = json.load(f_obj)
         return bag
-def powerDump():
-    filename = 'power.json'
-    with open(filename) as f_obj:
-        power = json.load(f_obj)
-        return power
 def featDump():
     filename = 'feat.json'
     with open(filename) as f_obj:
         feat = json.load(f_obj)
         return feat
+def atwillDump():
+    filename = 'atwill.json'
+    with open(filename) as f_obj:
+        atwill = json.load(f_obj)
+        return atwill
+def encounterDump():
+    filename = 'encounter.json'
+    with open(filename) as f_obj:
+        encounter = json.load(f_obj)
+        return encounter
+def dailyDump():
+    filename = 'daily.json'
+    with open(filename) as f_obj:
+        daily = json.load(f_obj)
+        return daily
+def utilityDump():
+    filename = 'utility.json'
+    with open(filename) as f_obj:
+        utility = json.load(f_obj)
+        return utility
+
 
 ability = abilDump()
 info = infoDump()
 skills = skillDump()
 bag = bagDump()
 feat = featDump()
-power = powerLoad()
+atwill = atwillDump()
+encounter = encounterDump()
+daily = dailyDump()
+utility = utilityDump()
+
 ##############################################################################################################################################
 #returns value of a roll. dice = [dice required for roll], bonuses[bonuses for specific roll]
 
@@ -245,11 +281,28 @@ def feats():
         print("#" + item + ":\t" + feat[item])
 ################################################################################################################################################################################################
 def powers():
-    return("wowo")
+    powChoice = input("Which powers would you like to see?\n (a)t-will, (e)ncounter, (d)aily, (u)tility\n")
+    powChoice = powChoice.lower()
+    print("\n")
+    if powChoice == 'a':
+        print("\n")
+        show("atwill")
+    elif powChoice == 'e':
+        print("\n")
+        show("encounter")
+    elif powChoice == 'd':
+        print("\n")
+        show("encounter")
+    elif powChoice == 'u':
+        print("\n")
+        show("encounter")
+
+def show(choice):
+        print("powers")
 #################################################################################################################################################################################################3
-#loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit
+#loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice (i)nfo, (e)dit, (q)uit
 while(True):
-    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit\n\n")
+    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice, (i)nfo, (e)dit, (q)uit\n\n")
     choice = choice.lower()
     if choice == 's':
         print("\n")
@@ -263,6 +316,9 @@ while(True):
     elif choice == 'f':
         print("\n")
         feats()
+    elif choice == 'p':
+        print("\n")
+        powers()
     elif choice == 'q':
         sys.exit(0)
     else:
