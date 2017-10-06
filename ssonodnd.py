@@ -28,7 +28,6 @@ def featLoad():
     with open(filename, 'w') as f_obj:
         json.dump(feat, f_obj)
 
-
 ###############################################################################################################################
 def abilDump():
     filename = 'ability.json'
@@ -66,7 +65,7 @@ ability = abilDump()
 info = infoDump()
 skills = skillDump()
 bag = bagDump()
-
+feat = featDump()
 ##############################################################################################################################################
 #returns value of a roll. dice = [dice required for roll], bonuses[bonuses for specific roll]
 
@@ -189,6 +188,11 @@ def health(HP, maxHP):
         HP -= int(amount)
     print("You have " + str(HP) + " HP\n")
     return HP
+######################################################################################################################################################################################################
+def feats():
+    for item in feat:
+        print("#" + item + ":\t" + feat[item])
+################################################################################################################################################################################################
 
 #################################################################################################################################################################################################3
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit
@@ -201,9 +205,12 @@ while(True):
     elif choice == 'c':
         print("\n")
         print(check())
-    elif choice =='h':
+    elif choice == 'h':
         print("\n")
         HP = health(HP, maxHP)
+    elif choice == 'f':
+        print("\n")
+        feats()
     elif choice == 'q':
         sys.exit(0)
     else:
