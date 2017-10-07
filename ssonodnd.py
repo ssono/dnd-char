@@ -307,8 +307,9 @@ def usePower(powChoice):
     print("\n")
     pwr = input("What power would you like to use?\n")
     print("\n")
-    pwr = pwr.lower()
-    pwr = powChoice[pwr]
+    if pwr != '':
+        pwr = pwr.lower()
+        pwr = powChoice[pwr]
     rolz = []
     atype = 'r'
     if len(pwr) == 3:
@@ -347,8 +348,23 @@ def showBag(bag):
         print("quantity:\t" + str(bag[item]["quantity"]))
         print("value:\t" + str(bag[item]["value"]))
         print("\n")
-    ed = input("would you like to edit?\n (y)es/(n)o\n")
-    if ed == 'y':
+    mod = input("would you like to edit an item, delete an item or add a new one?\n (e)dit, (a)dd, (d)elete\n")
+    if mod == 'e':
+        edition = input("What item are you editing?\n")
+        print("\n")
+        if edition in bag.keys():
+            attToEdit = input("Are you editing (v)alue, (q)uantity, or (i)nfo\n")
+            print("\n")
+            newVal = input("What is the new value(" + attToEdit +")?\n")
+            print("\n")
+            if newVal != '':
+                if attToEdit == 'v':
+                    bag[edition]["value"] = int(newVal)
+                elif attToEdit == 'q':
+                    bag[edition]["quantity"] = int(newVal)
+                elif attToEdit == 'i':
+                    bag[edition]["info"] = newVal
+    elif mod == 'a':
         name = input("what is the item's name?\n")
         print("\n")
         description = input("what is the item's description?\n")
@@ -357,18 +373,28 @@ def showBag(bag):
         print("\n")
         value = input("what is the item's value\n")
         print("\n")
-
-        #eval("bag['" + name + "'] = {'value':"+value+", 'quantity':"+quantity+", 'info':"+description + "}")
-        #bagLoad()
+        if(name != '' and description != '' and quantity != '' and value != ''):
+            bag[name] = {"value": int(value), "quantity": int(quantity), "info": description}
+    elif mod == 'd':
+        deletion = input("Which item are you deleting?\n")
+        print("\n")
+        try:
+            del bag[deletion]
+        except KeyError:
+            pass
+    return bag
 
 #################################################################################################################################################################################################
 def showInfo(info):
     for item in info:
         print(item + ":\t" + str(info[item]))
 #################################################################################################################################################################################################
+def edit_stuff(ability):
+    print("Your stuff is totes editted")
+#################################################################################################################################################################################################
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice (i)nfo, (e)dit, (q)uit
 while(True):
-    print("####################################################################")
+    print("###############################################################################")
     choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit\n\n")
     choice = choice.lower()
     if choice == 's':
@@ -388,10 +414,14 @@ while(True):
         powers(atwill, encounter, daily, utility)
     elif choice == 'b':
         print("\n")
-        showBag(bag)
+        bag = showBag(bag)
+        bagLoad()
     elif choice == 'i':
         print("\n")
         showInfo(info)
+    elif choice == 'e':
+        print("\n")
+        edit_stuff(ability)
     elif choice == 'q':
         sys.exit(0)
     else:
