@@ -1,1 +1,1 @@
-{"evasive strike": {"rattack": ["dex", "0", "AC", 1], "melee": [[4, 4], "[(ability['str'] - 10)//2]"], "mattack": ["str", "0", "AC", 1], "effect": "shift 1 + wis before or after. ranged or melee attack", "ranged": [[8, 8], "[(ability['dex'] - 10)//2]"]}}
+{"evasive strike": {"mattack": ["str", "0", "AC", 1], "rattack": ["dex", "0", "AC", 1], "effect": "shift 1 + wis before or after. ranged or melee attack", "ranged": [[8, 8], "[(ability['dex'] - 10)//2]"], "melee": [[4, 4], "[(ability['str'] - 10)//2]"]}}

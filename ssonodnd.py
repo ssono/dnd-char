@@ -30,7 +30,7 @@ encounter = {
 daily = {
     "split tree": {
         "effect": "attack 2 character within 3 spaces. Roll attack twice use higher",
-        "rattack": ("dex", "0", "AC", 2),
+        "attack": ("dex", "0", "AC", 2),
         "ranged": ([8, 8], "[(ability['dex'] - 10)//2]")
     }
 }
@@ -91,10 +91,6 @@ def utilityLoad():
         json.dump(utility, f_obj)
 
 
-atwillLoad()
-encounterLoad()
-dailyLoad()
-utilityLoad()
 ###############################################################################################################################
 def abilDump():
     filename = 'ability.json'
@@ -280,29 +276,100 @@ def feats():
     for item in feat:
         print("#" + item + ":\t" + feat[item])
 ################################################################################################################################################################################################
-def powers():
+def powers(atwill, encounter, daily, utility):
     powChoice = input("Which powers would you like to see?\n (a)t-will, (e)ncounter, (d)aily, (u)tility\n")
     powChoice = powChoice.lower()
     print("\n")
     if powChoice == 'a':
         print("\n")
-        show("atwill")
+        show(atwill)
+        usePower(atwill)
     elif powChoice == 'e':
         print("\n")
-        show("encounter")
+        show(encounter)
+        usePower(encounter)
     elif powChoice == 'd':
         print("\n")
-        show("encounter")
+        show(daily)
+        usePower(daily)
     elif powChoice == 'u':
         print("\n")
-        show("encounter")
+        show(utility)
 
 def show(choice):
-        print("powers")
-#################################################################################################################################################################################################3
+        for item in choice:
+            print(item + ":\n")
+            for att in choice[item]:
+                print("\t" + att + ":\t" + str(choice[item][att]))
+            print("\n")
+
+def usePower(powChoice):
+    print("\n")
+    pwr = input("What power would you like to use?\n")
+    print("\n")
+    pwr = pwr.lower()
+    pwr = powChoice[pwr]
+    rolz = []
+    atype = 'r'
+    if len(pwr) == 3:
+        for rol in range(pwr["attack"][3]):
+            d = d20()
+            rolz.append((d, d + int(pwr["attack"][1]) + (ability[pwr["attack"][0]] - 10)//2))
+    elif len(pwr) == 5:
+        rmChoice = input("Is this (r)anged or (m)elee\n")
+        atype = rmChoice
+        print("\n")
+        if rmChoice == 'r':
+            for rol in range(pwr["rattack"][3]):
+                d = d20()
+                rolz.append((d, d + int(pwr["rattack"][1]) + (ability[pwr["rattack"][0]] - 10)//2))
+        elif rmChoice == 'm':
+            for rol in range(pwr["mattack"][3]):
+                d = d20()
+                rolz.append((d, d + int(pwr["mattack"][1]) + (ability[pwr["mattack"][0]] - 10)//2))
+    for num in rolz:
+        print("base roll:\t" + str(num[0]))
+        print("total roll:\t" + str(num[1]))
+        print("\n")
+    hit = input("did you hit?\n (y)es or (n)o\n")
+    print("\n")
+    dmg = 0
+    if hit == 'y':
+        if atype == 'r':
+            dmg = roll(pwr["ranged"][0], eval(pwr["ranged"][1]))
+        elif atype == 'm':
+            dmg = roll(pwr["melee"][0], eval(pwr["melee"][1]))
+    print("damage:\t" + str(dmg))
+##################################################################################################################################################################################################
+def showBag(bag):
+    for item in bag:
+        print(item + ":\t" + bag[item]["info"])
+        print("quantity:\t" + str(bag[item]["quantity"]))
+        print("value:\t" + str(bag[item]["value"]))
+        print("\n")
+    ed = input("would you like to edit?\n (y)es/(n)o\n")
+    if ed == 'y':
+        name = input("what is the item's name?\n")
+        print("\n")
+        description = input("what is the item's description?\n")
+        print("\n")
+        quantity = input("what is the item's quantity?\n")
+        print("\n")
+        value = input("what is the item's value\n")
+        print("\n")
+
+        #eval("bag['" + name + "'] = {'value':"+value+", 'quantity':"+quantity+", 'info':"+description + "}")
+        #bagLoad()
+
+#################################################################################################################################################################################################
+def showInfo(info):
+    for item in info:
+        print(item + ":\t" + str(info[item]))
+#################################################################################################################################################################################################
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice (i)nfo, (e)dit, (q)uit
 while(True):
-    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice, (i)nfo, (e)dit, (q)uit\n\n")
+    print("####################################################################")
+    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit\n\n")
     choice = choice.lower()
     if choice == 's':
         print("\n")
@@ -318,7 +385,13 @@ while(True):
         feats()
     elif choice == 'p':
         print("\n")
-        powers()
+        powers(atwill, encounter, daily, utility)
+    elif choice == 'b':
+        print("\n")
+        showBag(bag)
+    elif choice == 'i':
+        print("\n")
+        showInfo(info)
     elif choice == 'q':
         sys.exit(0)
     else:
