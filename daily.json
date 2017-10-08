@@ -1,1 +1,1 @@
-{"split tree": {"effect": "attack 2 character within 3 spaces. Roll attack twice use higher", "attack": ["dex", "0", "AC", 2], "ranged": [[8, 8], "[(ability['dex'] - 10)//2]"]}}
+{"split tree": {"rattack": ["dex", 0, "AC", 2], "ranged": [[8, 8], ["dex"]], "effect": "attack 2 character within 3 spaces. Roll attack twice use higher"}}
