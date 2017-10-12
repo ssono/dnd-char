@@ -115,7 +115,8 @@ def roll(dice, bonuses):
     result = 0
     for d in dice:
         r = random.randint(1, d)
-#        print("die:\t" + str(r))
+        print("d"+str(d)+":\t" + str(r))
+
         result += r
     for b in bonuses:
         result += b
@@ -123,7 +124,9 @@ def roll(dice, bonuses):
     return result
 
 def d20():
-    return random.randint(1, 20)
+    result = random.randint(1, 20)
+    print("d20:\t" + str(result))
+    return result
 
 def calcBonus(ability, raw):
     result = raw
@@ -511,14 +514,19 @@ def edit_power(powObj, typ):
         daily = powObj
         dailyLoad()
 
-
-
+#################################################################################################################################################################################################
+def croll():
+    dlist = input("What dice are you rolling. (Separate by spaces)\n")
+    print("\n")
+    dlist = dlist.split(" ")
+    for i in dlist:
+        print("d"+i+":\t" + str(random.randint(1, int(i))) + "\n")
 
 #################################################################################################################################################################################################
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice (i)nfo, (e)dit, (q)uit
 while(True):
     print("###############################################################################")
-    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (q)uit\n\n")
+    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (r)oll, (q)uit\n\n")
     choice = choice.lower()
     if choice == 's':
         print("\n")
@@ -545,6 +553,9 @@ while(True):
     elif choice == 'e':
         print("\n")
         edit_stuff(ability, skills, info, feat, atwill, encounter, daily, utility)
+    elif choice == 'r':
+        print("\n")
+        croll()
     elif choice == 'q':
         sys.exit(0)
     else:
