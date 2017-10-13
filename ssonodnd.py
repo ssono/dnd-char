@@ -489,21 +489,29 @@ def edit_power(powObj, typ):
     print("\n")
     effect = input("What is the effect of your power?\n")
     print("\n")
-    rattack = input("What is the effect of your ranged attack? ['3-letter abilty', bonus, 'defense', num-of-rolls]\n")
+    rattack = input("What is your ranged attack? ['3-letter abilty', bonus, 'defense', num-of-rolls]\n")
     print("\n")
-    ranged = input("What is the effect of your ranged damage? [[#, #, #], ['3-letter ability', #, #]]\n")
+    ranged = input("What is your ranged damage? [[#, #, #], ['3-letter ability', #, #]]\n")
     print("\n")
-    mattack = input("What is the effect of your melee attack? ['3-letter abilty', bonus, 'defense', num-of-rolls]\n")
+    mattack = input("What is your melee attack? ['3-letter abilty', bonus, 'defense', num-of-rolls]\n")
     print("\n")
-    melee = input("What is the effect of your melee damage? [[#, #, #], ['3-letter abilty', #, #]]\n")
+    melee = input("What is your melee damage? [[#, #, #], ['3-letter abilty', #, #]]\n")
     print("\n")
-    if name != '' and effect != '' and ranged != '':
+    if name != '':
         rattack = eval(rattack)
         ranged = eval(ranged)
         if melee != '' and mattack != '':
             mattack = eval(mattack)
             melee = eval(melee)
-    powObj[name] = {"effect": effect, "rattack": rattack, "ranged": ranged, "mattack": mattack, "melee": melee}
+    temp = {"effect": effect, "rattack": rattack, "ranged": ranged, "mattack": mattack, "melee": melee}
+    print(str(temp["rattack"]))
+    if name == '':
+        return
+    for item in temp:
+        if temp[item] != '':
+            powObj[name][item] = temp[item]
+            print(str(powObj[name][item]))
+
     if typ == 'a':
         atwill = powObj
         atwillLoad()

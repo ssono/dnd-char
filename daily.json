@@ -1,1 +1,1 @@
-{"sure shot": {"rattack": ["dex", 3, "AC", 2], "ranged": [[8, 8, 8], ["dex", 1]], "effect": "can reroll each die roll"}}
+{"sure shot": {"effect": "can reroll each die roll", "rattack": ["dex", 3, "AC", 1], "ranged": [[8, 8, 8], ["dex", 1]]}}
