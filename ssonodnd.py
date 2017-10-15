@@ -361,8 +361,10 @@ def showBag(bag):
         print("\n")
         value = input("what is the item's value\n")
         print("\n")
+        weight = input("what is the item's weight\n")
+        print("\n")
         if(name != '' and description != '' and quantity != '' and value != ''):
-            bag[name] = {"value": int(value), "quantity": int(quantity), "info": description}
+            bag[name] = {"value": int(value), "quantity": int(quantity), "info": description, "weight": int(weight)}
     elif mod == 'd':
         deletion = input("Which item are you deleting?\n")
         print("\n")
