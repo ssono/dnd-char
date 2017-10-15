@@ -497,20 +497,33 @@ def edit_power(powObj, typ):
     print("\n")
     melee = input("What is your melee damage? [[#, #, #], ['3-letter abilty', #, #]]\n")
     print("\n")
-    if name != '':
+
+    if name == '':
+        return
+    else:
         rattack = eval(rattack)
         ranged = eval(ranged)
+        temp = {"effect": effect, "rattack": rattack, "ranged": ranged}
         if melee != '' and mattack != '':
             mattack = eval(mattack)
             melee = eval(melee)
-    temp = {"effect": effect, "rattack": rattack, "ranged": ranged, "mattack": mattack, "melee": melee}
-    print(str(temp["rattack"]))
-    if name == '':
-        return
-    for item in temp:
-        if temp[item] != '':
-            powObj[name][item] = temp[item]
-            print(str(powObj[name][item]))
+            temp["mattack"] = mattack
+            temp["melee"] = melee
+
+    try:
+        exists = powObj[name]
+        exists = True
+    except KeyError:
+        exists = False
+    if exists:
+        for item in temp:
+            try:
+                powObj[name][item] = temp[item]
+            except KeyError:
+                pass
+    else:
+        powObj[name] = temp
+
 
     if typ == 'a':
         atwill = powObj
