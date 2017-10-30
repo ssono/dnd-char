@@ -48,6 +48,10 @@ def utilityLoad():
     filename = 'utility.json'
     with open(filename, 'w') as f_obj:
         json.dump(utility, f_obj)
+def statusLoad():
+    filename = 'status.json'
+    with open(filename, 'w') as f_obj:
+        json.dump(status, f_obj)
 
 
 ###############################################################################################################################
@@ -96,7 +100,11 @@ def utilityDump():
     with open(filename) as f_obj:
         utility = json.load(f_obj)
         return utility
-
+def statusDump():
+    filename = 'status.json'
+    with open(filename) as f_obj:
+        status = json.load(f_obj)
+        return status
 
 ability = abilDump()
 info = infoDump()
@@ -107,6 +115,7 @@ atwill = atwillDump()
 encounter = encounterDump()
 daily = dailyDump()
 utility = utilityDump()
+
 
 ##############################################################################################################################################
 #returns value of a roll. dice = [dice required for roll], bonuses[bonuses for specific roll]
@@ -168,6 +177,7 @@ for item in bag:
 def status():
     print(
         "HP:\t" + str(HP) +"\n" +
+        "Surge:\t" + str(surgeVal) + "\n" +
         "AC:\t" + str(AC) +"\n" +
         "FORT:\t" + str(FORT) +"\n" +
         "REF:\t" + str(REF) +"\n" +
@@ -540,10 +550,11 @@ def edit_power(powObj, typ):
 #################################################################################################################################################################################################
 def croll():
     dlist = input("What dice are you rolling. (Separate by spaces)\n")
-    print("\n")
-    dlist = dlist.split(" ")
-    for i in dlist:
-        print("d"+i+":\t" + str(random.randint(1, int(i))) + "\n")
+    if dlist != "":
+        print("\n")
+        dlist = dlist.split(" ")
+        for i in dlist:
+            print("d"+i+":\t" + str(random.randint(1, int(i))) + "\n")
 
 #################################################################################################################################################################################################
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice (i)nfo, (e)dit, (q)uit
