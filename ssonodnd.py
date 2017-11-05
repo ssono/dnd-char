@@ -115,6 +115,7 @@ atwill = atwillDump()
 encounter = encounterDump()
 daily = dailyDump()
 utility = utilityDump()
+status = statusDump()
 
 
 ##############################################################################################################################################
@@ -160,12 +161,13 @@ passiveInsight = 10 + skills["ins"][1] + (info["level"]//2) + calcBonus(ability,
 passivePerception = 10 + skills["per"][1] + info["level"]//2 + calcBonus(ability, 'wis') + skills["per"][0]
 
 maxHP = 12 + ability["con"] + 5*(info["level"] - 1)
-HP = maxHP
+HP = status["hp"]
 bloodied = False
 surgeVal = maxHP // 4
 surgePerDay = 6
+surges = status["surge"]
 
-AC = 10 + info["level"]//2 + 2 + calcBonus(ability, 'dex')
+AC = 10 + info["level"]//2 + 3 + calcBonus(ability, 'dex')
 FORT = 10 + info["level"]//2 + 1 + calcBonus(ability, 'str')
 REF = 10 + info["level"]//2 + 1 + calcBonus(ability, 'dex')
 WILL = 10 + info["level"]//2 + calcBonus(ability, 'wis')
@@ -174,10 +176,11 @@ weight = 0
 for item in bag:
     weight += bag[item]["quantity"] * bag[item]["weight"]
 #################################################################################################################################################
-def status():
+def stats():
     print(
         "HP:\t" + str(HP) +"\n" +
         "Surge:\t" + str(surgeVal) + "\n" +
+        "Number of Surges\t" + str(surges) + "\n" +
         "AC:\t" + str(AC) +"\n" +
         "FORT:\t" + str(FORT) +"\n" +
         "REF:\t" + str(REF) +"\n" +
@@ -247,19 +250,26 @@ def check():
         return("thi:\t" + str(roll + info["level"]//2 + calcBonus(ability, 'dex') + skills["thi"][0] + skills["thi"][1]) + "\troll:\t" + str(roll))
     return result
 #####################################################################################################################################################################################################
-def health(HP, maxHP):
+def health(maxHP):
     healthChoice = input("Would you like to (a)dd or (s)ubtract health?\n")
+    global HP
+    global surges
     print("\n")
     amount = input("How much?\n")
     print("\n")
     if healthChoice == 'a':
         HP += int(amount)
-        if HP > maxHP:
-            HP = maxHP
+        s = input("Did you use a surge? (y/n)\n")
+        print("\n")
+        if s == 'y':
+            surges -= 1
     elif healthChoice == 's':
         HP -= int(amount)
     print("You have " + str(HP) + " HP\n")
-    return HP
+    status["surge"] = surges
+    status["hp"] = HP
+    statusLoad()
+
 ######################################################################################################################################################################################################
 def showFeats():
     for item in feat:
@@ -555,22 +565,30 @@ def croll():
         dlist = dlist.split(" ")
         for i in dlist:
             print("d"+i+":\t" + str(random.randint(1, int(i))) + "\n")
-
+#################################################################################################################################################################################################
+def reset():
+    global HP
+    global surges
+    HP = maxHP
+    surges = surgePerDay
+    status["surge"] = surges
+    status["hp"] = HP
+    statusLoad()
 #################################################################################################################################################################################################
 #loop that asks what you want to do. (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (d)ice (i)nfo, (e)dit, (q)uit
 while(True):
     print("###############################################################################")
-    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (r)oll, (q)uit\n\n")
+    choice = input("What would you like to do?\n (s)tatus, (c)heck, (h)ealth, (f)eats, (p)ower, (b)ag, (i)nfo, (e)dit, (d)ice, (r)est, (q)uit\n\n")
     choice = choice.lower()
     if choice == 's':
         print("\n")
-        status()
+        stats()
     elif choice == 'c':
         print("\n")
         print(check())
     elif choice == 'h':
         print("\n")
-        HP = health(HP, maxHP)
+        health(maxHP)
     elif choice == 'f':
         print("\n")
         showFeats()
@@ -587,10 +605,14 @@ while(True):
     elif choice == 'e':
         print("\n")
         edit_stuff(ability, skills, info, feat, atwill, encounter, daily, utility)
-    elif choice == 'r':
+    elif choice == 'd':
         print("\n")
         croll()
+    elif choice == 'r':
+        print("\n")
+        status = reset()
     elif choice == 'q':
+        statusLoad()
         sys.exit(0)
     else:
         print("Try again...\n")
