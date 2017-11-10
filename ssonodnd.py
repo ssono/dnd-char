@@ -167,7 +167,7 @@ surgeVal = maxHP // 4
 surgePerDay = 6
 surges = status["surge"]
 
-AC = 10 + info["level"]//2 + 3 + calcBonus(ability, 'dex')
+AC = 10 + info["level"]//2 + 4 + calcBonus(ability, 'dex')
 FORT = 10 + info["level"]//2 + 1 + calcBonus(ability, 'str')
 REF = 10 + info["level"]//2 + 1 + calcBonus(ability, 'dex')
 WILL = 10 + info["level"]//2 + calcBonus(ability, 'wis')
