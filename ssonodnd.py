@@ -388,12 +388,8 @@ def showBag(bag):
     elif mod == 'd':
         deletion = input("Which item are you deleting?\n")
         print("\n")
-        if deletion != '':
-            print("t")
-            try:
-                del bag[deletion]
-            except KeyError:
-                return
+        if deletion in bag:
+            bag.pop(deletion, None)
     return bag
 
 #################################################################################################################################################################################################
