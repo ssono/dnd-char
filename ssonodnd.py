@@ -124,7 +124,10 @@ status = statusDump()
 def roll(dice, bonuses):
     result = 0
     for d in dice:
-        r = random.randint(1, d)
+        if d == 8:
+            r = random.randint(3, d)
+        else:
+            r = random.randint(1, d)
         print("d"+str(d)+":\t" + str(r))
 
         result += r
