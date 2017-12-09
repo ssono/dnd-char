@@ -566,6 +566,7 @@ def croll():
             print("d"+i+":\t" + str(random.randint(1, int(i))) + "\n")
 #################################################################################################################################################################################################
 def reset():
+    global status
     global HP
     global surges
     HP = maxHP
@@ -609,7 +610,7 @@ while(True):
         croll()
     elif choice == 'r':
         print("\n")
-        status = reset()
+        reset()
     elif choice == 'q':
         statusLoad()
         sys.exit(0)
